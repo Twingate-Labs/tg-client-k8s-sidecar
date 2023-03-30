@@ -5,4 +5,4 @@ This project is an example on how Twingate headless client can be used to provid
 2. Add desired resources to the service account in the Twingate admin UI
 3. Download the Twingate service key and base64 encode with commands such as `openssl base64 -in key.json -out key.base64`
 4. Add the content of your base64 encoded service key to [secret.yaml](./secret.yaml)
-5. Add the section `spec.template.spec.containers.sidecar-container` and `spec.template.spec.volume` sections to your deployment
+5. Add the section `spec.template.spec.containers.sidecar-container` and `spec.template.spec.volume` sections from [deployment.yaml](./deployment.yaml) to your deployment
