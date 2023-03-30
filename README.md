@@ -15,3 +15,6 @@ Zero Trust access to protected Twingate resources from K8s services including da
 
 ### Architecture Diagram
 ![Architecture Diagram](./diagram.png)
+
+### Additional Note
+* `privileged: true` is set for the sidecar container in the [deployment.yaml](./deployment.yaml), this is required for the Twingate Headless Client
