@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: app
+          image: brightbox/rails-hello-world
+          ports:
+            - name: web
+              containerPort: 3000
+              protocol: TCP
+        - name: sidecar-container
+          image: ubuntu:latest
+          securityContext:
+            privileged: true
+          command: ["/bin/sh","-c"]
+          args:
+            - apt-get update;
+              apt-get install curl -y;
+              curl https://binaries.twingate.com/client/linux/install.sh | bash;
+              sudo twingate setup --headless /etc/twingate-service-key/key.base64;
+              sudo twingate start;
+          volumeMounts:
+            - mountPath: "/etc/twingate-service-key/"
+              name: service-key
+              readOnly: true
+      volumes:
+        - name: service-key
+          secret:
+            secretName: service-key
