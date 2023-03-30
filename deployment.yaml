@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world
+  name: tg-headless-client-sidecar
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-world
+      app: tg-headless-client-sidecar
   template:
     metadata:
       labels:
-        app: hello-world
+        app: tg-headless-client-sidecar
     spec:
       containers:
-        - name: app
-          image: brightbox/rails-hello-world
-          ports:
-            - name: web
-              containerPort: 3000
-              protocol: TCP
+        - name: main-container
+          image: ubuntu:latest
+          command: [ "/bin/sh","-c" ]
+          args:
+            - apt-get update;
+              sleep infinity;
         - name: sidecar-container
           image: ubuntu:latest
           securityContext:
@@ -30,6 +30,7 @@ spec:
               curl https://binaries.twingate.com/client/linux/install.sh | bash;
               sudo twingate setup --headless /etc/twingate-service-key/key.base64;
               sudo twingate start;
+              sleep infinity;
           volumeMounts:
             - mountPath: "/etc/twingate-service-key/"
               name: service-key
